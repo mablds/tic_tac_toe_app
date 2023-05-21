@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/colors.dart';
 import '../components/board.dart';
 
 class Home extends StatelessWidget {
@@ -13,10 +14,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 97, 154, 252),
+      backgroundColor: CoreColors.primaryColor,
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: const Color.fromARGB(255, 97, 154, 252),
+        backgroundColor: CoreColors.primaryColor,
       ),
       body: const Board(),
     );
