@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe_app/src/presentation/screens/home.dart';
 
-const _appTitle = 'Tic Tac Toe';
+const _appTitle = 'Jogo da Velha';
 
 void main() => runApp(const TicTacToe());
 
