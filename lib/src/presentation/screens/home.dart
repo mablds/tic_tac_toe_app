@@ -21,14 +21,22 @@ class _HomeState extends State<Home> {
   String playerTurn = 'X';
   int xPlayerScore = 0;
   int oPlayerScore = 0;
+  int drawGameScore = 0;
 
   void makePlay({
     required int index,
     required String player,
   }) {
     setState(() {
+      if (board[index] != '') return;
+
       board[index] = player;
-      if (!_hasWinner(player: player)) {
+
+      if (_hasWinner(player: player)) {
+        _showWinDialog(winner: player);
+      } else if (_hasDrawCondition()) {
+        _showDrawDialog();
+      } else {
         _changePlayerTurn(lastPlayer: player);
       }
     });
@@ -53,42 +61,67 @@ class _HomeState extends State<Home> {
         board[0] != '' && board[0] == board[3] && board[0] == board[6] ||
         board[1] != '' && board[1] == board[4] && board[1] == board[7] ||
         board[2] != '' && board[2] == board[5] && board[2] == board[8]) {
-      if (player == 'X') {
-        xPlayerScore = xPlayerScore + 1;
-        log('xPlayerScore: $xPlayerScore');
-        log('oPlayerScore: $oPlayerScore');
-      } else {
-        oPlayerScore = oPlayerScore + 1;
-        log('xPlayerScore: $xPlayerScore');
-        log('oPlayerScore: $oPlayerScore');
-      }
-
-      _showWinDialog(winner: player);
-
       return true;
     }
 
     return false;
   }
 
+  bool _hasDrawCondition() => !board.contains('');
+
   void _showWinDialog({required String winner}) {
+    if (winner == 'X') {
+      xPlayerScore = xPlayerScore + 1;
+      log('xPlayerScore: $xPlayerScore');
+      log('oPlayerScore: $oPlayerScore');
+    } else {
+      oPlayerScore = oPlayerScore + 1;
+      log('xPlayerScore: $xPlayerScore');
+      log('oPlayerScore: $oPlayerScore');
+    }
+
     showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("\" $winner \" venceu!"),
-            actions: [
-              TextButton(
-                child: const Text("Jogar novamente"),
-                onPressed: () {
-                  resetBoard();
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(' $winner  venceu!'),
+          actions: [
+            TextButton(
+              child: const Text("Jogar novamente"),
+              onPressed: () {
+                resetBoard();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDrawDialog() {
+    drawGameScore = drawGameScore + 1;
+    log('drawGameScore: $drawGameScore');
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Empate!'),
+          actions: [
+            TextButton(
+              child: const Text("Jogar novamente"),
+              onPressed: () {
+                resetBoard();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
