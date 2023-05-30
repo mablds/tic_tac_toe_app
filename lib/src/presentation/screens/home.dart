@@ -72,12 +72,8 @@ class _HomeState extends State<Home> {
   void _showWinDialog({required String winner}) {
     if (winner == 'X') {
       xPlayerScore = xPlayerScore + 1;
-      log('xPlayerScore: $xPlayerScore');
-      log('oPlayerScore: $oPlayerScore');
     } else {
       oPlayerScore = oPlayerScore + 1;
-      log('xPlayerScore: $xPlayerScore');
-      log('oPlayerScore: $oPlayerScore');
     }
 
     showDialog(
