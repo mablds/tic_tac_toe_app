@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   int oPlayerScore = 0;
   int drawGameScore = 0;
 
-  void makePlay({
+  void _makePlay({
     required int index,
     required String player,
   }) {
@@ -34,8 +34,10 @@ class _HomeState extends State<Home> {
 
       if (_hasWinner(player: player)) {
         _showWinDialog(winner: player);
+        _resetBoard();
       } else if (_hasDrawCondition()) {
         _showDrawDialog();
+        _resetBoard();
       } else {
         _changePlayerTurn(lastPlayer: player);
       }
@@ -46,10 +48,15 @@ class _HomeState extends State<Home> {
     playerTurn = lastPlayer == 'X' ? 'O' : 'X';
   }
 
-  void resetBoard() {
+  void _resetBoard() {
     setState(() {
       board = List.filled(9, '');
     });
+  }
+
+  void _resetScore() {
+    xPlayerScore = 0;
+    oPlayerScore = 0;
   }
 
   bool _hasWinner({required String player}) {
@@ -86,7 +93,6 @@ class _HomeState extends State<Home> {
             TextButton(
               child: const Text("Jogar novamente"),
               onPressed: () {
-                resetBoard();
                 Navigator.of(context).pop();
               },
             )
@@ -110,7 +116,7 @@ class _HomeState extends State<Home> {
             TextButton(
               child: const Text("Jogar novamente"),
               onPressed: () {
-                resetBoard();
+                _resetBoard();
                 Navigator.of(context).pop();
               },
             )
@@ -128,43 +134,62 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
         backgroundColor: CoreColors.primaryColor,
       ),
-      body: GridView.count(
-        crossAxisCount: 3,
-        padding: const EdgeInsets.all(16.0),
-        mainAxisSpacing: 8.0,
-        crossAxisSpacing: 8.0,
-        children: List.generate(
-          9,
-          (index) => InkWell(
-            onTap: () => makePlay(
-              index: index,
-              player: playerTurn,
-            ),
-            child: Container(
-              height: 8,
-              width: 8,
-              decoration: const BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(13),
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  board[index],
-                  style: TextStyle(
-                    fontSize: 70,
-                    color: CoreColors.primaryColor,
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 60),
+            child: GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              padding: const EdgeInsets.all(16.0),
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
+              children: List.generate(
+                9,
+                (index) => InkWell(
+                  onTap: () => _makePlay(
+                    index: index,
+                    player: playerTurn,
+                  ),
+                  child: Container(
+                    height: 8,
+                    width: 8,
+                    decoration: const BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(13),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        board[index],
+                        style: TextStyle(
+                          fontSize: 70,
+                          color: CoreColors.primaryColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
+          Text(
+            'Agora é a vez do $playerTurn de jogar',
+            style: const TextStyle(fontSize: 18),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 15),
+          ),
+          Text('X venceu $xPlayerScore vez(es)'),
+          Text('O venceu $oPlayerScore vez(es)'),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          resetBoard();
+          _resetBoard();
+          _resetScore();
         },
         label: const Text(
           'Reset',
