@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,6 +65,7 @@ class Game extends StatelessWidget {
     final cubit = context.read<GameCubit>();
 
     return BlocConsumer<GameCubit, GameState>(
+      bloc: cubit,
       listener: (context, state) {
         if (state.status == GameStatus.hasWinner && state.gameWinner != null) {
           _showWinDialog(
@@ -80,6 +83,7 @@ class Game extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        log('Teste');
         return Scaffold(
           backgroundColor: CoreColors.primaryColor,
           appBar: AppBar(
@@ -100,7 +104,7 @@ class Game extends StatelessWidget {
                   children: List.generate(
                     9,
                     (index) => InkWell(
-                      onTap: () => cubit.makePlay(
+                      onTap: () async => await cubit.makePlay(
                         index: index,
                         playerTurn: state.playerTurn,
                       ),
