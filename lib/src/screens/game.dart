@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../theme/colors.dart';
+import '../theme/colors.dart';
 import '../bloc/game_cubit.dart';
 import '../bloc/game_state.dart';
 

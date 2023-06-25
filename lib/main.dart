@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tic_tac_toe_app/src/features/game/presentation/screens/game.dart';
+import 'package:tic_tac_toe_app/src/screens/game.dart';
 
-import 'src/features/game/presentation/bloc/game_cubit.dart';
+import 'src/bloc/game_cubit.dart';
 
 const _appTitle = 'Jogo da Velha';
 
