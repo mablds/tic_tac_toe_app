@@ -13,23 +13,31 @@ class GameCubit extends Cubit<GameState> {
     List<String> actualBoard = List.from(state.board);
     actualBoard[index] = playerTurn;
 
-    if (hasWinner()) {
-      emit(state.copyWith(
-        status: GameStatus.hasWinner,
-        gameWinner: playerTurn,
-        playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
-      ));
+    if (_hasWinner()) {
+      emit(
+        state.copyWith(
+          status: GameStatus.hasWinner,
+          gameWinner: playerTurn,
+          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
+        ),
+      );
       resetBoard();
-    } else if (hasDraw()) {
-      emit(state.copyWith(
-        status: GameStatus.hasDraw,
-      ));
+    } else if (_hasDraw()) {
+      emit(
+        state.copyWith(
+          status: GameStatus.hasDraw,
+        ),
+      );
+
       resetBoard();
     } else {
-      return emit(state.copyWith(
-        playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
-        board: actualBoard,
-      ));
+      return emit(
+        state.copyWith(
+          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
+          status: GameStatus.inProgress,
+          board: actualBoard,
+        ),
+      );
     }
   }
 
@@ -39,10 +47,11 @@ class GameCubit extends Cubit<GameState> {
   void resetBoard() => emit(
         state.copyWith(
           board: List.filled(9, '', growable: false),
+          status: GameStatus.initial,
         ),
       );
 
-  bool hasWinner() {
+  bool _hasWinner() {
     if (state.board[0] != '' &&
             state.board[0] == state.board[1] &&
             state.board[0] == state.board[2] ||
@@ -80,12 +89,19 @@ class GameCubit extends Cubit<GameState> {
     }
   }
 
-  void increaseDrawScore() =>
-      emit(state.copyWith(drawGameScore: state.drawGameScore + 1));
-
-  void resetScore() => emit(
-        state.copyWith(xPlayerScore: 0, oPlayerScore: 0, drawGameScore: 0),
+  void increaseDrawScore() => emit(
+        state.copyWith(
+          drawGameScore: state.drawGameScore + 1,
+        ),
       );
 
-  bool hasDraw() => !state.board.contains('');
+  void resetScore() => emit(
+        state.copyWith(
+            xPlayerScore: 0,
+            oPlayerScore: 0,
+            drawGameScore: 0,
+            status: GameStatus.initial),
+      );
+
+  bool _hasDraw() => !state.board.contains('');
 }

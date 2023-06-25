@@ -10,50 +10,72 @@ class Game extends StatelessWidget {
 
   final String title;
 
+  void _showWinDialog({
+    required BuildContext context,
+    required GameCubit cubit,
+    required String winner,
+  }) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(' $winner  venceu!'),
+          actions: [
+            TextButton(
+              child: const Text("Jogar novamente"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDrawDialog({
+    required BuildContext context,
+    required GameCubit cubit,
+  }) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Empate!'),
+          actions: [
+            TextButton(
+              child: const Text("Jogar novamente"),
+              onPressed: () {
+                cubit.resetBoard();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<GameCubit>();
 
     return BlocConsumer<GameCubit, GameState>(
       listener: (context, state) {
-        if (state.status == GameStatus.hasWinner) {
-          showDialog(
-            barrierDismissible: false,
+        if (state.status == GameStatus.hasWinner && state.gameWinner != null) {
+          _showWinDialog(
             context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(' $state.winner  venceu!'),
-                actions: [
-                  TextButton(
-                    child: const Text("Jogar novamente"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            },
+            cubit: cubit,
+            winner: state.gameWinner!,
           );
         }
 
         if (state.status == GameStatus.hasDraw) {
-          showDialog(
-            barrierDismissible: false,
+          _showDrawDialog(
             context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Empate!'),
-                actions: [
-                  TextButton(
-                    child: const Text("Jogar novamente"),
-                    onPressed: () {
-                      cubit.resetBoard();
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            },
+            cubit: cubit,
           );
         }
       },

@@ -5,7 +5,7 @@ enum GameStatus { initial, inProgress, hasWinner, hasDraw, error }
 class GameState extends Equatable {
   const GameState({
     this.status = GameStatus.initial,
-    this.playerTurn = 'x',
+    this.playerTurn = 'X',
     this.drawGameScore = 0,
     this.oPlayerScore = 0,
     this.xPlayerScore = 0,
