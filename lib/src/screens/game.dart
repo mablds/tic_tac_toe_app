@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +81,6 @@ class Game extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        log('Teste');
         return Scaffold(
           backgroundColor: CoreColors.primaryColor,
           appBar: AppBar(
@@ -104,7 +101,7 @@ class Game extends StatelessWidget {
                   children: List.generate(
                     9,
                     (index) => InkWell(
-                      onTap: () async => await cubit.makePlay(
+                      onTap: () => cubit.makePlay(
                         index: index,
                         playerTurn: state.playerTurn,
                       ),

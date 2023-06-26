@@ -14,17 +14,18 @@ class TicTacToe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: _appTitle,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      title: _appTitle,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: BlocProvider(
+        create: (_) => GameCubit(),
+        child: const Game(
+          title: _appTitle,
         ),
-        debugShowCheckedModeBanner: false,
-        home: BlocProvider(
-          create: (_) => GameCubit(),
-          child: const Game(
-            title: _appTitle,
-          ),
-        ));
+      ),
+    );
   }
 }

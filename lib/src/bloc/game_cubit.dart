@@ -7,10 +7,10 @@ class GameCubit extends Cubit<GameState> {
     GameState? initialState,
   }) : super(initialState ?? const GameState());
 
-  Future<void> makePlay({
+  void makePlay({
     required int index,
     required String playerTurn,
-  }) async {
+  }) {
     if (state.board[index] != '') return;
 
     List<String> actualBoard = List.from(state.board);
@@ -33,13 +33,11 @@ class GameCubit extends Cubit<GameState> {
       );
       resetBoard();
     } else {
-      return Future.delayed(const Duration(milliseconds: 100), () {
-        emit(state.copyWith(
-          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
-          status: GameStatus.inProgress,
-          board: actualBoard,
-        ));
-      });
+      emit(state.copyWith(
+        playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
+        status: GameStatus.inProgress,
+        board: actualBoard,
+      ));
     }
   }
 
