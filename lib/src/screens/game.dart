@@ -89,40 +89,42 @@ class Game extends StatelessWidget {
             title: Text(title),
             backgroundColor: CoreColors.primaryColor,
           ),
-          body: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 60),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 3,
-                  padding: const EdgeInsets.all(16.0),
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  children: List.generate(
-                    9,
-                    (index) => InkWell(
-                      key: Key(index.toString()),
-                      onTap: () => cubit.makePlay(
-                        index: index,
-                        playerTurn: state.playerTurn,
-                      ),
-                      child: Container(
-                        height: 8,
-                        width: 8,
-                        decoration: const BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(13),
-                          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 60),
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    padding: const EdgeInsets.all(16.0),
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
+                    children: List.generate(
+                      9,
+                      (index) => InkWell(
+                        key: Key(index.toString()),
+                        onTap: () => cubit.makePlay(
+                          index: index,
+                          playerTurn: state.playerTurn,
                         ),
-                        child: Center(
-                          child: Text(
-                            state.board[index],
-                            style: TextStyle(
-                              fontSize: 70,
-                              color: CoreColors.primaryColor,
+                        child: Container(
+                          height: 8,
+                          width: 8,
+                          decoration: const BoxDecoration(
+                            color: Colors.white70,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(13),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              state.board[index],
+                              style: TextStyle(
+                                fontSize: 70,
+                                color: CoreColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -130,25 +132,25 @@ class Game extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Text(
-                'Agora é a vez do ${state.playerTurn} de jogar',
-                style: const TextStyle(fontSize: 18),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15),
-              ),
-              Column(
-                children: [
-                  Text(
-                    'X venceu ${state.xPlayerScore} vez(es)',
-                    textAlign: TextAlign.start,
-                  ),
-                  Text('O venceu ${state.oPlayerScore} vez(es)'),
-                  Text('Empatou ${state.drawGameScore} vez(es)'),
-                ],
-              ),
-            ],
+                Text(
+                  'Agora é a vez do ${state.playerTurn} de jogar',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      'X venceu ${state.xPlayerScore} vez(es)',
+                      textAlign: TextAlign.start,
+                    ),
+                    Text('O venceu ${state.oPlayerScore} vez(es)'),
+                    Text('Empatou ${state.drawGameScore} vez(es)'),
+                  ],
+                ),
+              ],
+            ),
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
