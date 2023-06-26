@@ -16,21 +16,13 @@ class GameCubit extends Cubit<GameState> {
     List<String> actualBoard = List.from(state.board);
     actualBoard[index] = playerTurn;
 
-    if (_hasWinner()) {
-      emit(
-        state.copyWith(
-          status: GameStatus.hasWinner,
-          gameWinner: playerTurn,
-          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
-        ),
-      );
+    if (_hasWinner(board: actualBoard)) {
+      increaseWinScore(playerTurn: playerTurn);
+
       resetBoard();
-    } else if (_hasDraw()) {
-      emit(
-        state.copyWith(
-          status: GameStatus.hasDraw,
-        ),
-      );
+    } else if (_hasDraw(board: actualBoard)) {
+      increaseDrawScore();
+
       resetBoard();
     } else {
       emit(state.copyWith(
@@ -51,47 +43,48 @@ class GameCubit extends Cubit<GameState> {
         ),
       );
 
-  bool _hasWinner() {
-    if (state.board[0] != '' &&
-            state.board[0] == state.board[1] &&
-            state.board[0] == state.board[2] ||
-        state.board[3] != '' &&
-            state.board[3] == state.board[4] &&
-            state.board[3] == state.board[5] ||
-        state.board[6] != '' &&
-            state.board[6] == state.board[7] &&
-            state.board[6] == state.board[8] ||
-        state.board[0] != '' &&
-            state.board[0] == state.board[4] &&
-            state.board[0] == state.board[8] ||
-        state.board[2] != '' &&
-            state.board[2] == state.board[6] &&
-            state.board[2] == state.board[4] ||
-        state.board[0] != '' &&
-            state.board[0] == state.board[3] &&
-            state.board[0] == state.board[6] ||
-        state.board[1] != '' &&
-            state.board[1] == state.board[4] &&
-            state.board[1] == state.board[7] ||
-        state.board[2] != '' &&
-            state.board[2] == state.board[5] &&
-            state.board[2] == state.board[8]) {
+  bool _hasWinner({required List<String> board}) {
+    if (board[0] != '' && board[0] == board[1] && board[0] == board[2] ||
+        board[3] != '' && board[3] == board[4] && board[3] == board[5] ||
+        board[6] != '' && board[6] == board[7] && board[6] == board[8] ||
+        board[0] != '' && board[0] == board[4] && board[0] == board[8] ||
+        board[2] != '' && board[2] == board[6] && board[2] == board[4] ||
+        board[0] != '' && board[0] == board[3] && board[0] == board[6] ||
+        board[1] != '' && board[1] == board[4] && board[1] == board[7] ||
+        board[2] != '' && board[2] == board[5] && board[2] == board[8]) {
       return true;
     }
     return false;
   }
 
-  void increaseWinScore({required String winner}) {
-    if (winner == 'X') {
-      return emit(state.copyWith(xPlayerScore: state.xPlayerScore + 1));
+  void increaseWinScore({
+    required String playerTurn,
+  }) {
+    if (playerTurn == 'X') {
+      return emit(
+        state.copyWith(
+          xPlayerScore: state.xPlayerScore + 1,
+          status: GameStatus.hasWinner,
+          gameWinner: playerTurn,
+          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
+        ),
+      );
     } else {
-      return emit(state.copyWith(oPlayerScore: state.oPlayerScore + 1));
+      return emit(
+        state.copyWith(
+          oPlayerScore: state.oPlayerScore + 1,
+          status: GameStatus.hasWinner,
+          gameWinner: playerTurn,
+          playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
+        ),
+      );
     }
   }
 
   void increaseDrawScore() => emit(
         state.copyWith(
           drawGameScore: state.drawGameScore + 1,
+          status: GameStatus.hasDraw,
         ),
       );
 
@@ -103,5 +96,5 @@ class GameCubit extends Cubit<GameState> {
             status: GameStatus.initial),
       );
 
-  bool _hasDraw() => !state.board.contains('');
+  bool _hasDraw({required List<String> board}) => !board.contains('');
 }
