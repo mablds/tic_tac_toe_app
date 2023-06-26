@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tic_tac_toe_app/src/screens/constants/game_constants.dart';
 
 import '../theme/colors.dart';
-import '../bloc/game_cubit.dart';
-import '../bloc/game_state.dart';
+import 'bloc/game_cubit.dart';
+import 'bloc/game_state.dart';
 
 class Game extends StatelessWidget {
   const Game({super.key, required this.title});
@@ -23,8 +24,9 @@ class Game extends StatelessWidget {
           title: Text(' $winner  venceu!'),
           actions: [
             TextButton(
-              child: const Text("Jogar novamente"),
+              child: Text(GameConstants.playAgainText),
               onPressed: () {
+                cubit.resetBoard();
                 Navigator.of(context).pop();
               },
             )
@@ -43,10 +45,10 @@ class Game extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Empate!'),
+          title: Text(GameConstants.drawGame),
           actions: [
             TextButton(
-              child: const Text("Jogar novamente"),
+              child: Text(GameConstants.playAgainText),
               onPressed: () {
                 cubit.resetBoard();
                 Navigator.of(context).pop();
@@ -101,6 +103,7 @@ class Game extends StatelessWidget {
                   children: List.generate(
                     9,
                     (index) => InkWell(
+                      key: Key(index.toString()),
                       onTap: () => cubit.makePlay(
                         index: index,
                         playerTurn: state.playerTurn,
@@ -137,7 +140,10 @@ class Game extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text('X venceu ${state.xPlayerScore} vez(es)'),
+                  Text(
+                    'X venceu ${state.xPlayerScore} vez(es)',
+                    textAlign: TextAlign.start,
+                  ),
                   Text('O venceu ${state.oPlayerScore} vez(es)'),
                   Text('Empatou ${state.drawGameScore} vez(es)'),
                 ],

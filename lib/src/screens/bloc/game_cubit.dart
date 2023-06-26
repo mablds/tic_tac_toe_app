@@ -18,12 +18,8 @@ class GameCubit extends Cubit<GameState> {
 
     if (_hasWinner(board: actualBoard)) {
       increaseWinScore(playerTurn: playerTurn);
-
-      resetBoard();
     } else if (_hasDraw(board: actualBoard)) {
       increaseDrawScore();
-
-      resetBoard();
     } else {
       emit(state.copyWith(
         playerTurn: revertPlayerTurn(actualPlayer: playerTurn),
