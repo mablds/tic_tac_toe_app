@@ -10,7 +10,7 @@ I've built this with Flutter Channel stable, 3.10.2. So I really don't know how 
 - Run the command: `flutter pub get` on its directory
 - Then run it using your favorite device.
 
-To run the unit tests, you can just do the following command:
+To run the tests, you can just do the following command:
 
 - `flutter test`
 
