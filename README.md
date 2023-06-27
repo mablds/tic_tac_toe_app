@@ -12,7 +12,8 @@ I've built this with Flutter Channel stable, 3.10.2. So I really don't know how 
 
 To run the tests, you can just do the following command:
 
-- `flutter test`
+- Integration test: `flutter test integration_test/game_test.dart`
+- Widget test: `flutter test test/widget_test.dart`
 
 ## Sample
 
