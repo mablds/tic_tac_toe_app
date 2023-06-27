@@ -17,4 +17,4 @@ To run the tests, you can just do the following command:
 
 ## Sample
 
-<img src="https://github.com/mablds/tic_tac_toe_app/assets/47724057/c3baac97-8936-453d-b578-c5d4ed631932" width="250">
+<img src="https://github.com/mablds/tic_tac_toe_app/assets/47724057/a6cdd725-692d-409f-a560-c22c0405d593" width="250">
